@@ -29,7 +29,14 @@ export class NgPackage {
   }
 
   public get flatModuleFileName(): string {
-    return path.basename(this.ngPackageJson.lib.flatModuleFile || this.meta.name);
+    let name: string;
+    if (this.ngPackageJson.lib) {
+      name = this.ngPackageJson.lib.flatModuleFile;
+    } else {
+      name = this.meta.name;
+    }
+
+    return path.basename(name);
   }
 
   public get libExternals(): Object {

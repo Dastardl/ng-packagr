@@ -30,8 +30,15 @@ export const readPackage = (file: string): Promise<NgPackage> => {
           })
           .then((schemaFileName: string) => readJson(schemaFileName))
           .then((schemaJson: any) => {
-            const NgPackageSchema = SchemaClassFactory(schemaJson);
+            const NgPackageSchema = SchemaClassFactory<NgPackageConfig>(schemaJson);
             const schema: SchemaClass<NgPackageConfig> = new NgPackageSchema(ngPkg);
+
+const foo = schema.$$get('lib.entryFile'); // --> "src/public_api.ts"
+const bar = schema.$$get('lib'); // --> undefined
+console.log(foo);
+console.log(bar);
+
+            // XX ...
 
             return Promise.resolve(new NgPackage(base, schema.$$root(), pkg));
           });
